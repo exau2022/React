@@ -23,22 +23,40 @@
         class Compteur extends React.Component  {
             constructor(props) {
                 super(props);
-                this.value = 0;
-                this.startCompte = this.startCompte.bind(this)
+                this.id = null
+                this.state = {
+                    value : 0
+                }
+
+                this.count = this.count.bind(this)
+                // this.startCompte = this.startCompte.bind(this);
+                this.stoped = this.stoped.bind(this);
 
             }
 
-            startCompte() {
-
+            count() {
+                this.id = setInterval(() => this.setState({
+                    value: this.state.value +1
+                }) ,1000)
             }
+
+            stoped() {
+               clearInterval(this.id);
+            }
+            // startCompte() {
+            //     this.setState({
+            //         value: this.state.value +1
+            //     })             
+            // }
            
             render() {
 
                 return (
                     <div className ="heading">
                         <h1>{this.props.message}</h1>
-                        <p>{this.props.subtitle}</p>
-                        <button>Start</button>
+                        <p id="myCompte">{this.state.value}</p>
+                        <button onClick={this.count}>Start</button>
+                        <button onClick={this.stoped}>Stop</button>
                     </div>
                 )
             }
