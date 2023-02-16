@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function formatName(users) {
+            return users.firstName + ' ' + users.lastName;
+        }
+
+        const user =  {
+            firstName:'kylian',
+            lastName:'Mbappé'
+        };
+
+        const el = (
+            <h1>
+                Bonjour {formatName(user)} 
+            </h1>
+        )
+
+        const getGreeting = (user) => {
+            if(user){
+               return el;
+            }
+            else {
+                return <h1>Bonjour, Belle Inconnue.</h1>;
+            }
+        }
+      
+        function Welcome(props) {
+            return <h1>{props.name}</h1>
+        }
+
+        function App() {
+            return(
+                <div>
+                    <Welcome name = "Sara"/>
+                    <Welcome name = "Saras"/>
+                    <Welcome name = "ss"/>
+                </div>
+            )
+        }
+        const name = 'Clarisse Agbegnenou';
+        const element = <h1>Bonjour {name} !</h1>
+
+        ReactDOM.render(      
+            <App/>,
+            document.getElementById('root') 
+        )
+    </script>
+</body>
+</html>

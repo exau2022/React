@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class Horaire extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <p> {new Date().toLocaleTimeString()}</p>
+                    </div>
+                )
+            }
+        }
+
+
+        class MyClock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state =  {
+                    date: new Date()
+                }
+            }
+
+            componentDidMount() {
+                setInterval(() => this.setHours()
+                ,1000);
+            }
+
+            setHours() {
+                this.setState({
+                    date: new Date()
+                })
+            }
+
+            render() {
+                return(
+                    <div>
+                        <ShowClock value = {this.state.date}/>
+                    </div>
+                )
+            }
+        }
+
+        class ShowClock  extends React.Component {
+            render() {
+                return(
+                    <div>
+                        <p>{this.props.value.toDateString()}</p>
+                        <p>{this.props.value.getHours()} h {this.props.value.getMinutes()} m {this.props.value.getSeconds()} s </p>
+                    </div>
+                )
+            }
+        }
+       
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    seconde:0,
+                    minute:58,
+                    heure:23
+                }               
+            }
+
+            componentDidMount() {
+                setInterval(()=> this.show()
+                ,1000)
+            }
+
+            show() {
+               this.setState({
+                    seconde:this.state.seconde +1
+                })
+
+                if(this.state.seconde == 60) {
+                    this.setState({
+                        seconde:0,
+                        minute:this.state.minute +1
+                    })
+                }
+
+                if(this.state.minute == 60) {
+                    this.setState({
+                        seconde:0,
+                        minute:0, 
+                        heure:this.state.heure +1
+                    })
+                }
+                if(this.state.heure == 24) {
+                    this.setState({
+                        heure:0,
+                        seconde:0,
+                        minute:0,
+                       
+                    })
+                }
+            }
+
+            render() {
+                return(
+                    <p>{this.state.heure} h : {this.state.minute} m : {this.state.seconde} s</p>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            // <Horaire/>,
+            // <MyClock/>,
+            <Clock/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+</html>
