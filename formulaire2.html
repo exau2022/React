@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class Reservation extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    isGoing: false,
+                    numberOfGuests:2,
+                    myText:''
+                };
+                
+                this.handleInputChange = this.handleInputChange.bind(this);
+            }
+
+           
+            handleInputChange(event) {
+                const target = event.target;
+                const type = target.type;
+                const valeur= target.type ==='checkbox' ? target.checked : target.value ;
+                
+                const name = target.name;
+                /* permet de gérer plusieurs champs contrôlés selon le name */
+                this.setState({
+                    [name] : valeur
+                });
+
+                // console.log(valeur);
+                console.log(name);
+            }
+
+            render() {
+                return(
+                    <form>
+                        <label>
+                            Participe :
+                            <input name="isGoing" type="checkbox"
+                                checked={this.state.isGoing}
+                                onChange={this.handleInputChange} />
+                        </label>
+                        <br />
+                        <label>
+                            Nombre d'invités :
+                            <input name="numberOfGuests" type="number"
+                                value={this.state.numberOfGuests}
+                                onChange={this.handleInputChange} />
+                        </label>
+                        <br/>
+                        <label>
+                            text :
+                            <input name="myText" type="text"
+                                value={this.state.myText}
+                                onChange={this.handleInputChange} />
+                        </label>
+                    </form> 
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <Reservation/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+</html>

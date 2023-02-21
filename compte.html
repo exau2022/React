@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REACT PROJET</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+      
+        class Compteur extends React.Component  {
+            constructor(props) {
+                super(props);
+                this.id = null
+                this.state = {
+                    value : 0
+                }
+
+                this.count = this.count.bind(this)
+                // this.startCompte = this.startCompte.bind(this);
+                this.stoped = this.stoped.bind(this);
+
+            }
+
+            count() {
+                this.id = setInterval(() => this.setState({
+                    value: this.state.value +1
+                }) ,1000)
+            }
+
+            stoped() {
+               clearInterval(this.id);
+            }
+            // startCompte() {
+            //     this.setState({
+            //         value: this.state.value +1
+            //     })             
+            // }
+           
+            render() {
+
+                return (
+                    <div className ="heading">
+                        <h1>{this.props.message}</h1>
+                        <p id="myCompte">{this.state.value}</p>
+                        <button onClick={this.count}>Start</button>
+                        <button onClick={this.stoped}>Stop</button>
+                    </div>
+                )
+            }
+        }
+
+        //rendu dans le DOM
+        ReactDOM.render(
+            
+            <Compteur message="Compteur"/>,
+            document.getElementById('root')
+        );
+
+        
+    </script>
+</body>
+</html>

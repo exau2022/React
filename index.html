@@ -4,71 +4,139 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REACT PROJET</title>
+    <title>Document</title>
     <!-- Librairie react -->
     <script src="assets/JS/react.development.js"></script>
     <script src="assets/JS/react-dom.development.js"></script>
     <!-- Librairie babel -->
     <script src="assets/JS/babel.min.js"></script>
-    <style>
-        .heading {
-            color: purple;
-        }
-    </style>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
-      
-        class Compteur extends React.Component  {
+
+        /*fonctions pour convertir de Fahrenheit à Celsius */   
+        function toCelsius(fahrenheit) {
+            return (fahrenheit - 32) * 5 / 9;
+        }
+
+        /*fonctions pour convertir de Celsius à Fahrenheit */
+        function toFahrenheit(celsius) {
+            return (celsius * 9 / 5) + 32;
+        }
+
+        /* fonction qui prend une chaîne de caractère et une fonction de conversion */
+        function tryConvert(temperature, convert) {
+
+            //renvoie un nombre à  virgule flottante
+            const input = parseFloat(temperature);
+
+            //renvoie une chaîne vide si la temperature n'est pas un entier
+            if (Number.isNaN(input)) {
+                return '';
+            }
+
+            //convertit l'entrer de l'input
+            const output = convert(input);
+
+            // La Math.round()méthode statique renvoie la valeur d'un nombre arrondi à l'entier le plus proche.
+            //arrondit la valeur de retour à trois décimales :
+            const rounded = Math.round(output * 1000) / 1000;
+
+            // retouner rounded en chaine de caractère
+            return rounded.toString();
+        }
+
+        
+        class BoilingVerdict extends React.Component {
+            render() {
+                if(this.props.celsius >= 100) {
+                    return <p>L'eau bout.</p>;
+                }
+                return <p>L'eau ne bout pas.</p>;
+            }
+        }
+
+        const scaleNames = {
+            c: 'Celsius',
+            f: 'Fahrenheit'
+        };
+
+        class TemperatureInput extends React.Component {
             constructor(props) {
                 super(props);
-                this.id = null
-                this.state = {
-                    value : 0
-                }
-
-                this.count = this.count.bind(this)
-                // this.startCompte = this.startCompte.bind(this);
-                this.stoped = this.stoped.bind(this);
-
+                
+                this.handleChange = this.handleChange.bind(this);
             }
 
-            count() {
-                this.id = setInterval(() => this.setState({
-                    value: this.state.value +1
-                }) ,1000)
+            handleChange(event) {
+              
+                this.props.onTemperatureChange(event.target.value);
             }
 
-            stoped() {
-               clearInterval(this.id);
-            }
-            // startCompte() {
-            //     this.setState({
-            //         value: this.state.value +1
-            //     })             
-            // }
-           
             render() {
 
-                return (
-                    <div className ="heading">
-                        <h1>{this.props.message}</h1>
-                        <p id="myCompte">{this.state.value}</p>
-                        <button onClick={this.count}>Start</button>
-                        <button onClick={this.stoped}>Stop</button>
+                const temperature = this.props.temperature;
+                const scale = this.props.scale;
+                return(
+                    <div>
+                        <label>Saisissez la température en {scaleNames[scale]} : </label>
+                        <input type="number" value={temperature} onChange={this.handleChange}/>
+                        <BoilingVerdict celsius = {parseFloat(temperature)}/>
                     </div>
+
                 )
             }
         }
 
-        //rendu dans le DOM
-        ReactDOM.render(
-            
-            <Compteur message="Compteur"/>,
-            document.getElementById('root')
-        );
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+                this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+                this.state = {
+                    temperature: '', 
+                    scale: 'c'
+                };
+            }
 
+            handleCelsiusChange(temperature) {
+                this.setState({
+                    scale: 'c', 
+                    temperature
+                });
+            }
+
+            handleFahrenheitChange(temperature) {
+                this.setState({
+                    scale: 'f',
+                    temperature
+                });
+            }
+
+            render() {
+                const scale = this.state.scale;
+                const temperature = this.state.temperature;
+                const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+                const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+                
+                return (          
+                    <div>
+                       
+                        <TemperatureInput scale="c" temperature={celsius} onTemperatureChange={this.handleCelsiusChange}/>
+                        <TemperatureInput scale="f" temperature={fahrenheit} onTemperatureChange={this.handleFahrenheitChange}/>
+                       <BoilingVerdict celsius = {parseFloat(temperature)}/>
+                    </div>
+                )
+            }
+            
+        }
+
+       
+        ReactDOM.render(
+            <Calculator/>, document.getElementById("root")
+        ) 
+            
         
     </script>
 </body>

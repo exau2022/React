@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class FormName extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    valeur:'',
+                    description:'',
+                    option:'mango'
+                };
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleChangeDesc = this.handleChangeDesc.bind(this);
+
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            handleChange(event) {
+                this.setState({
+                    valeur: event.target.value,
+                });
+            }
+
+            handleChangeDesc(event) {
+                this.setState({
+                    description:event.target.value
+                });
+            }
+
+            handleChangeOption(event) {
+                this.setState({
+                    option: event.target.value
+                })
+            }
+            
+            handleSubmit(event) {
+                alert("Nom envoyé: " + this.state.valeur + " Description: " + this.state.description + " Option: " + this.state.option) 
+                event.preventDefault();    
+            }
+
+            render() {
+                return(
+                    <div>
+                        <form onSubmit={this.handleSubmit}>
+                            <div>
+                                <label>Name</label>
+                                <input type="text" value={this.state.valeur} onChange={this.handleChange}/>
+                            </div>
+
+                            <div>
+                                <textarea value= {this.state.description} onChange={this.handleChangeDesc}></textarea>
+                            </div>
+
+                            <div>
+                                <label>Choissisez un fruit:</label>
+                                <select value={this.state.option} onChange={this.handleChangeOption}>
+                                    <option value="lime">Citron</option>
+                                    <option value="mango">Mangue</option>
+                                    <option value="coconut">Noix de coco</option>
+                                </select>
+                               
+                            </div>
+                           
+                            <input type="submit" value="Envoyer"/>
+                        </form>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <FormName/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+</html>
