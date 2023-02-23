@@ -77,3 +77,69 @@
     </script>
 </body>
 </html>
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\SessionsController;
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', [PagesController::class, 'index']);
+
+Route::get('/about', [PagesController::class, 'about']);
+
+Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+
+Route::get('/article', [ArticlesController::class, 'index']);
+
+Route::get('/article/{article}', [ArticlesController::class, 'show']);
+
+Route::get('/create', [ArticlesController::class, 'create'])->middleware('admin');
+
+Route::get('/article/{article}/edit', [ArticlesController::class, 'edit'])->middleware('auth');
+
+Route::post('/articles/create', [ArticlesController::class, 'store'])->middleware('auth');
+
+Route::patch('/article/{article}/edit', [ArticlesController::class, 'update'])->middleware('admin');
+
+Route::delete('article/{article}/delete', [ArticlesController::class, 'delete'])->middleware('admin');
+
+
+//Auth
+Route::get('/create-account', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'create'])->name('register.create');
+
+Route::get('/login', [SessionsController::class, 'index'])->name('login.index');
+Route::post('/login', [SessionsController::class, 'authenticate'])->name('login');
+
+
+//Logout
+Route::post('/logout', [SessionsController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::get('/profile', [UserController::class, 'index'])->name('profile')->middleware('auth');
+
+
+/**
+ * user.index
+ * user.create
+ * user.store
+ * user.show
+ * user.update
+ * user.delete
+ * user.edit
+ */

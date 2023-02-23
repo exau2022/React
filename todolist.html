@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class TodoListt extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    value:'',
+                    list: ['ggg','hhhh']
+                }
+                this.items = document.querySelectorAll('.item');
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.arrayListe = this.arrayListe.bind(this);
+                this.delete = this.delete.bind(this);
+            }
+
+            handleChange(event) {
+              
+               this.setState({
+                    value: event.target.value    
+               })
+            }
+            
+            delete() {
+                // this.items = document.querySelectorAll('.item');
+                this.items.forEach((element)=>{
+                    console.log(element)
+                })
+                
+            }
+            
+            handleSubmit(e) {
+                this.setState({
+                    value: '',     
+                });
+
+                this.state.list.push(this.state.value)
+                e.preventDefault()
+               console.log(this.state.list)
+            }
+
+            arrayListe() {
+                  return(
+                    <ul>
+                        {
+                            this.state.list.map((element, index)=> {
+                                return(
+                                    <li className="item" key={index}> {element}
+                                        <button onClick={this.delete}>Delete</button>
+                                    </li>
+                                )
+                            
+                            })
+                        }
+                    </ul>
+                )
+            }
+
+            render() {
+
+                const liste = this.state.value;
+                const myListe = this.state.list;
+                const scale = this.props.scale;
+                return(
+                    <div>
+                        <h2>Saisissez une liste d'activité</h2>
+                        <form onSubmit={this.handleSubmit}>
+                            <input type="text" value={liste} onChange={this.handleChange}/>
+                            <input type="submit" value="Envoyer"/>
+                        </form>
+                        
+                        {this.arrayListe()}
+    
+                    </div>
+
+                )
+            }
+        }
+
+        
+        ReactDOM.render(
+            <TodoListt/>, document.getElementById("root")
+        ) 
+            
+        
+    </script>
+</body>
+</html>
