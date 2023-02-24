@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>REACT js</title>
     <!-- Librairie react -->
     <script src="assets/JS/react.development.js"></script>
     <script src="assets/JS/react-dom.development.js"></script>
@@ -18,16 +18,16 @@
         class TodoListt extends React.Component {
             constructor(props) {
                 super(props);
+                this.message="Veuillez saisir une tâche correcte"
                 this.state = {
                     value:'',
-                    list: ['ggg','hhhh']
+                    list: []
                 }
-                this.items = document.querySelectorAll('.item');
-
+               
                 this.handleChange = this.handleChange.bind(this);
                 this.handleSubmit = this.handleSubmit.bind(this);
                 this.arrayListe = this.arrayListe.bind(this);
-                this.delete = this.delete.bind(this);
+             
             }
 
             handleChange(event) {
@@ -37,46 +37,81 @@
                })
             }
             
-            delete() {
-                // this.items = document.querySelectorAll('.item');
-                this.items.forEach((element)=>{
-                    console.log(element)
-                })
-                
-            }
-            
             handleSubmit(e) {
                 this.setState({
                     value: '',     
                 });
-
-                this.state.list.push(this.state.value)
+                this.verification(this.state.value)
+                // this.state.list.push(this.state.value);
                 e.preventDefault()
-               console.log(this.state.list)
+            
+            }
+            
+            verification(element) {
+                let firstUpperCase;
+                let mypp = document.querySelector(".message");
+
+                if(element == "" || element.trim() == "") {
+                    return mypp.innerHTML = this.message;
+                }
+
+                else {
+                    firstUpperCase = element.toLowerCase();
+                    let myfirstUpperCase = (firstUpperCase.replace(firstUpperCase[0],firstUpperCase[0].toUpperCase())).trim();
+                    mypp.innerHTML =""
+                    return this.state.list.push(myfirstUpperCase);;
+                }
+                 
+            }
+
+            delete(id) {
+                let yourArray = this.state.list;
+             
+                let newArray = yourArray.filter( (element,index) => {
+                    return element != yourArray[id]
+                    //return index != id
+                 })
+
+                // for(let i=0; i<yourArray.length; i++) {
+                //     if(i==id) {
+                //         continue;
+                //     } else {
+                //        mynewArray.push(yourArray[i])
+                //     }
+                // }
+            
+                this.setState({
+                    list: newArray    
+                })
+
             }
 
             arrayListe() {
-                  return(
-                    <ul>
-                        {
-                            this.state.list.map((element, index)=> {
-                                return(
-                                    <li className="item" key={index}> {element}
-                                        <button onClick={this.delete}>Delete</button>
-                                    </li>
-                                )
-                            
-                            })
-                        }
-                    </ul>
-                )
+                if(this.state.list.length !=0) {
+                    return(
+                        <ul>
+                            {
+                                this.state.list.map((element, index)=> {
+                                    return(
+                                        <li className="item" key={index}> {element}
+                                            <button onClick={this.delete.bind(this, index)}>Delete</button>
+                                        </li>
+                                    )
+                                
+                                })
+                            }
+                        </ul>
+                    )
+                } else {
+                    return (<p>Vous n'avez pas de liste d'activités</p>)
+                }
+                 
             }
 
             render() {
 
                 const liste = this.state.value;
-                const myListe = this.state.list;
-                const scale = this.props.scale;
+              
                 return(
                     <div>
                         <h2>Saisissez une liste d'activité</h2>
@@ -84,7 +119,7 @@
                             <input type="text" value={liste} onChange={this.handleChange}/>
                             <input type="submit" value="Envoyer"/>
                         </form>
-                        
+                        <p className="message"></p>
                         {this.arrayListe()}
     
                     </div>
@@ -93,6 +128,7 @@
             }
         }
 
+        const msg = <p>OK</p>
         
         ReactDOM.render(
             <TodoListt/>, document.getElementById("root")

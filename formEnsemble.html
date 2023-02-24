@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Librairie react -->
+    <script src="assets/JS/react.development.js"></script>
+    <script src="assets/JS/react-dom.development.js"></script>
+    <!-- Librairie babel -->
+    <script src="assets/JS/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class InformationsForm extends React.Component {
+            constructor(props) {
+                super(props) 
+            }
+            render() {
+                return(
+                    <p>{this.props.desc}</p>
+                )
+            }
+        }
+
+
+        class Form extends React.Component{
+            
+            constructor(props) {
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.state = {
+                    lname:"",
+                    fname:"",
+                    genre:"",
+                    age:"",
+                    passion:"",
+                    mail:"",
+                    tel:"",
+                    addresse:"",
+                    feminin:"Féminin",
+                    masculin:"Masculin",
+                    autre:"Autre",
+                    conditions:false
+         
+                }
+            }
+            
+            handleChange() {
+                const target = event.target;
+                const values = target.type === "checkbox" ? target.checked :target.value;
+                const names = target.name;
+
+                this.setState({
+                    [names] : values
+                })
+                
+            }
+
+            handleSubmit(event) {
+                console.log("ok");
+                let infos = document.querySelector(".infos")
+                infos.innerHTML += `<p>${this.state.lname}<p/>`;
+              
+                event.preventDefault()
+            }
+
+            render() {
+                return(
+                    <div>
+                        <form>
+                            <div>
+                                <label>Nom</label>
+                                <input type="text" name="lname" value={this.state.lname} onChange={this.handleChange}/>
+                            </div>
+                            <div>
+                                <label>Prénom(s)</label>
+                                <input type="text" name="fname" value={this.state.fname} onChange={this.handleChange}/>
+                            </div>
+                            <div onChange={this.handleChange}>
+                                <label>Genre</label>
+                                <input type="radio" name="genre" value={this.state.feminin}/> Féminin
+                                <input type="radio" name="genre" value={this.state.masculin}/> Masculin
+                                <input type="radio" name="genre" value={this.state.autre} /> Autre
+                            </div>
+                            <div>
+                                <label>Age</label>
+                                <input type="number" name="age" value={this.state.age} onChange={this.handleChange}/>
+                            </div>
+                            <div>
+                                <label>Vos passions</label>
+                                <select name="passion" value={this.state.passion} onChange={this.handleChange}>
+                                    <option value="musique">Musique</option>
+                                    <option value="voyage">Voyage</option>
+                                    <option value="lecture">Lecture</option>
+                                    <option value="dance">Dance</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>E-mail</label>
+                                <input type="email" name="mail" value={this.state.mail} onChange={this.handleChange}/>
+                            </div>
+                            <div>
+                                <label>Tel</label>
+                                <input type="tel" name="tel" value={this.state.tel} onChange={this.handleChange}/>
+                            </div>
+                            <div>
+                            
+                                <textarea name="addresse" cols="30" rows="10" placeholder="Addresses" value={this.state.addresse} onChange={this.handleChange}></textarea>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="conditions" value={this.state.conditions} onChange={this.handleChange} />
+                                <span>Accepter les conditions d'utilisations</span>
+                            </div>
+                            <div>
+                                <input type="submit" value="Envoyer"  onClick={this.handleSubmit}/>
+                            </div>
+                            
+                        </form>
+                       <div className="infos">
+                       
+                        </div>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <Form/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+</html>
